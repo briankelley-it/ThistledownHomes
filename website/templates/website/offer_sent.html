@@ -1,0 +1,18 @@
+{% extends 'website/base.html' %}
+{% block title %}Offer Request Sent | Thistledown Homes{% endblock %}
+{% block extra_head %}<meta name="robots" content="noindex">{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="wrap offer-done">
+    <span class="offer-done-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+    <p class="kicker">Request sent</p>
+    <h1>Thank you. Your offer request for {{ home.address }} is in.</h1>
+    <p class="muted">I will review it personally and reach out by email or phone to talk through next steps. Nothing is binding until we both sign a written contract.</p>
+    <p class="wire-note"><strong>Never wire money to me.</strong> If anyone emails you wiring instructions, call the title company at a number you looked up yourself before sending anything.</p>
+    <div class="offer-done-actions">
+      <a class="btn" href="{{ home.get_absolute_url }}">Back to the Home</a>
+      <a class="btn btn-ghost" href="{% url 'website:homes' %}">Browse More Homes</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

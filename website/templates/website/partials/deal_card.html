@@ -1,0 +1,15 @@
+{% load humanize %}<article class="deal reveal">
+  <div class="deal-photo">{% if deal.photo_url %}<img loading="lazy" src="{{ deal.wide_url }}" alt="{{ deal.name }}, {{ deal.location }}" width="1100" height="760">{% endif %}</div>
+  <div class="deal-body">
+    <p class="kicker">{{ deal.location }} · {{ deal.source }}</p>
+    <h3>{{ deal.name }}</h3>
+    <p>{{ deal.description }}</p>
+    <dl class="deal-numbers">
+      <div><dt>Similar homes nearby</dt><dd><s>${{ deal.nearby_price|intcomma }}</s></dd></div>
+      <div><dt>I paid</dt><dd>${{ deal.purchase_price|intcomma }}</dd></div>
+      <div><dt>Next owner paid</dt><dd>${{ deal.sale_price|intcomma }}</dd></div>
+      <div class="hl"><dt>Buyer saved vs nearby</dt><dd>${{ deal.buyer_savings|intcomma }}</dd></div>
+    </dl>
+    <ol class="timeline"><li><span>Bought</span>{{ deal.bought|date:"M Y" }}</li><li><span>Listed</span>{{ deal.listed|date:"M Y" }}</li><li><span>Sold</span>{{ deal.sold|date:"M Y" }}</li></ol>
+  </div>
+</article>

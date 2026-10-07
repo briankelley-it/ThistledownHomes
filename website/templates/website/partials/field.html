@@ -1,0 +1,1 @@
+<label{% if field.errors %} class="has-error"{% endif %}>{{ field.label }}{% if optional %} <small>(optional)</small>{% endif %}{{ field }}{% for e in field.errors %}<span class="field-error">{{ e }}</span>{% endfor %}</label>

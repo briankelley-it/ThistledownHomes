@@ -1,0 +1,7 @@
+{% extends "admin/auth_layout.html" %}
+{% block title %}Waiting for approval{% endblock %}
+{% block form %}
+<h1 class="auth-title">Waiting for approval</h1>
+<p class="auth-note">Your account is set up, but the owner has not turned on your access yet. You can sign in as soon as they approve it.</p>
+<a class="auth-btn" href="{% url 'admin:login' %}">Back to sign in</a>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'website/base.html' %}
+{% block title %}Contact | Thistledown Homes{% endblock %}
+{% block description %}Ask about a home, schedule a showing, or say hello to Thistledown Homes.{% endblock %}
+{% block content %}
+{% include 'website/partials/page_head.html' with crumb='Contact' kicker='Contact' heading='Get in touch.' lead='Ask about a listing or schedule a private showing.' %}
+<section class="section section-tight">
+  <div class="wrap contact-grid">
+    <div class="reveal">
+      <p class="wire-note"><strong>Never wire money to me.</strong> All deposits and closing funds go through a licensed title company. <a href="{% url 'website:verify' %}">How to verify me</a></p>
+      <ul class="contact-info">
+        <li><span>Email</span><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+        <li><span>Phone</span><a href="tel:{{ site.phone_link }}">{{ site.phone }}</a></li>
+        <li><span>Area</span>{{ site.area }}</li>
+      </ul>
+    </div>
+    <form class="card-form card-form-light reveal" id="contact-form" method="post" novalidate>
+      {% csrf_token %}
+      {% if form.non_field_errors %}<div class="form-errors" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+      <p class="hidden-field"><label for="{{ form.website.id_for_label }}">{{ form.website.label }}</label>{{ form.website }}</p>
+      <div class="form-grid">
+        {% include 'website/partials/field.html' with field=form.name %}
+        {% include 'website/partials/field.html' with field=form.email %}
+        {% include 'website/partials/field.html' with field=form.phone optional=True %}
+        {% include 'website/partials/field.html' with field=form.home optional=True %}
+        <label class="span-2{% if form.message.errors %} has-error{% endif %}">Message{{ form.message }}{% for e in form.message.errors %}<span class="field-error">{{ e }}</span>{% endfor %}</label>
+      </div>
+      <label class="check-row">{{ form.sms_consent }}<span>{{ form.sms_consent.label }}</span></label>
+      {% for e in form.sms_consent.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+      <p class="form-note">By submitting, you acknowledge the <a href="{% url 'website:privacy' %}">Privacy Policy</a> and <a href="{% url 'website:terms' %}">Terms of Use</a>.</p>
+      <button class="btn" type="submit">Send Message <span aria-hidden="true">→</span></button>
+    </form>
+  </div>
+</section>
+{% endblock %}

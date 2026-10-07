@@ -1,0 +1,18 @@
+{% load humanize %}{% with photo=home.cover %}
+<article class="property-card reveal" data-home="{{ home.slug }}">
+  <div class="property-photo">
+    <a href="{{ home.get_absolute_url }}" tabindex="-1" aria-hidden="true">{% if photo %}<img loading="lazy" src="{{ photo.card_url }}" alt="{{ photo.alt|default:home.address }}" width="800" height="560">{% endif %}</a>
+    <span class="status status-{{ home.status }}">{{ home.get_status_display }}</span>
+    <button class="save" type="button" data-save="{{ home.slug }}" aria-pressed="false" aria-label="Save {{ home.address }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C1 8.4 3 4.5 6.8 4.5c2.1 0 3.7 1.2 5.2 3 1.5-1.8 3.1-3 5.2-3 3.8 0 5.8 3.9 4.4 7.3C19.5 16.4 12 21 12 21z"/></svg></button>
+  </div>
+  <div class="property-body">
+    <div class="price-row"><p class="price">${{ home.price|intcomma }}</p>{% if home.savings %}<span class="under">${% widthratio home.savings 1000 1 %}K under nearby</span>{% endif %}</div>
+    <p class="nearby">Similar homes nearby: <s>${{ home.nearby_price|intcomma }}</s></p>
+    <h3><a href="{{ home.get_absolute_url }}">{{ home.address }}</a></h3>
+    <p class="muted">{{ home.location }}</p>
+    <ul class="specs"><li><strong>{{ home.beds }}</strong> bd</li><li><strong>{{ home.baths|floatformat:"-1" }}</strong> ba</li><li><strong>{{ home.sqft|intcomma }}</strong> sq ft</li></ul>
+    <p class="summary">{{ home.summary }}</p>
+    <a class="btn btn-ghost btn-block" href="{{ home.get_absolute_url }}">View Property <span aria-hidden="true">→</span></a>
+  </div>
+</article>
+{% endwith %}

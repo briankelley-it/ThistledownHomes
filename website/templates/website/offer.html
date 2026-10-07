@@ -1,0 +1,89 @@
+{% extends 'website/base.html' %}{% load humanize %}
+{% block title %}Start an Offer on {{ home.address }} | Thistledown Homes{% endblock %}
+{% block description %}Send a no-obligation offer request for {{ home.address }}, {{ home.location }}.{% endblock %}
+{% block extra_head %}<meta name="robots" content="noindex">{% endblock %}
+{% block content %}
+<section class="page-head page-head-slim">
+  <div class="wrap">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="{% url 'website:home' %}">Home</a> <span aria-hidden="true">/</span> <a href="{% url 'website:homes' %}">Homes For Sale</a> <span aria-hidden="true">/</span> <a href="{{ home.get_absolute_url }}">{{ home.address }}</a> <span aria-hidden="true">/</span> Offer</nav>
+  </div>
+</section>
+<section class="section section-tight">
+  <div class="wrap offer-grid">
+    <form class="card-form card-form-light offer-form" method="post" novalidate>
+      {% csrf_token %}
+      <div class="offer-title">
+        <p class="kicker">{% if home.status == 'under_contract' %}Backup offer{% else %}Start an offer{% endif %}</p>
+        <h1>Tell me about your offer.</h1>
+        <p class="muted">No payment and no obligation. I review every request personally and follow up to talk through next steps.</p>
+      </div>
+      {% if form.errors %}<div class="form-errors" role="alert">Please check the highlighted fields below.</div>{% endif %}
+      <p class="hidden-field"><label for="{{ form.website.id_for_label }}">{{ form.website.label }}</label>{{ form.website }}</p>
+
+      <fieldset class="offer-step">
+        <legend><span>1</span>Your details</legend>
+        <div class="form-grid">
+          <div class="span-2">{% include 'website/partials/field.html' with field=form.name %}</div>
+          {% include 'website/partials/field.html' with field=form.email %}
+          {% include 'website/partials/field.html' with field=form.phone %}
+        </div>
+      </fieldset>
+
+      <fieldset class="offer-step">
+        <legend><span>2</span>Your offer</legend>
+        <div class="form-grid">
+          <label class="span-2{% if form.offer_price.errors %} has-error{% endif %}">{{ form.offer_price.label }}
+            <span class="money-input"><span aria-hidden="true">$</span>{{ form.offer_price }}</span>
+            <small class="offer-compare" id="offer-compare" data-asking="{{ home.price }}" aria-live="polite">Asking price: ${{ home.price|intcomma }}</small>
+            {% for e in form.offer_price.errors %}<span class="field-error">{{ e }}</span>{% endfor %}
+          </label>
+          {% include 'website/partials/field.html' with field=form.financing %}
+          {% include 'website/partials/field.html' with field=form.timeline %}
+          <div class="span-2" id="lender-row">{% include 'website/partials/field.html' with field=form.lender optional=True %}</div>
+        </div>
+      </fieldset>
+
+      <fieldset class="offer-step">
+        <legend><span>3</span>A few more things</legend>
+        <label class="check-row check-plain">{{ form.wants_showing }}<span>{{ form.wants_showing.label }}</span></label>
+        <label class="check-row check-plain">{{ form.has_agent }}<span>{{ form.has_agent.label }}</span></label>
+        <div class="form-grid offer-agent" id="agent-row">{% include 'website/partials/field.html' with field=form.agent_name %}</div>
+        <div class="form-grid offer-notes"><div class="span-2">{% include 'website/partials/field.html' with field=form.notes optional=True %}</div></div>
+      </fieldset>
+
+      <div class="offer-consent">
+        <label class="check-row{% if form.acknowledged.errors %} has-error{% endif %}">{{ form.acknowledged }}<span>{{ form.acknowledged.label }}</span></label>
+        {% for e in form.acknowledged.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+        <label class="check-row">{{ form.sms_consent }}<span>{{ form.sms_consent.label }} <small>(optional)</small></span></label>
+      </div>
+      <p class="form-note">By submitting, you acknowledge the <a href="{% url 'website:privacy' %}">Privacy Policy</a> and <a href="{% url 'website:terms' %}">Terms of Use</a>.</p>
+      <button class="btn btn-block" type="submit">Send Offer Request <span aria-hidden="true">→</span></button>
+    </form>
+
+    <aside class="offer-side">
+      <div class="offer-home">
+        {% with photo=home.cover %}{% if photo %}<img src="{{ photo.thumb_url }}" alt="" width="240" height="160">{% endif %}{% endwith %}
+        <div>
+          <span class="status status-{{ home.status }}">{{ home.get_status_display }}</span>
+          <p class="offer-home-addr">{{ home.address }}</p>
+          <p class="muted">{{ home.location }} · {{ home.beds }} bd · {{ home.baths|floatformat:"-1" }} ba · {{ home.sqft|intcomma }} sq ft</p>
+        </div>
+        <dl class="offer-home-price">
+          <div><dt>Asking price</dt><dd>${{ home.price|intcomma }}</dd></div>
+          {% if home.savings %}<div><dt>Similar homes nearby</dt><dd><s>${{ home.nearby_price|intcomma }}</s></dd></div>{% endif %}
+        </dl>
+      </div>
+      <div class="offer-next">
+        <h2>What happens next</h2>
+        <ol>
+          <li><strong>I review your request</strong> and reach out to talk it through.</li>
+          <li><strong>You see the home</strong> in person, if you would like to first.</li>
+          <li><strong>We sign a written contract</strong> using the standard Texas forms. Nothing is binding before this.</li>
+          <li><strong>Earnest money goes to a title company,</strong> which handles the closing.</li>
+        </ol>
+      </div>
+      <p class="wire-note"><strong>Never wire money to me.</strong> All deposits and closing funds go through a licensed title company. Confirm wiring instructions by phone with the title company before sending anything. <a href="{% url 'website:verify' %}">How to verify me</a></p>
+    </aside>
+  </div>
+</section>
+{% endblock %}

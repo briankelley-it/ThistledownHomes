@@ -1,0 +1,8 @@
+<section class="page-head">
+  <div class="wrap">
+    {% if crumb %}<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="{% url 'website:home' %}">Home</a> <span aria-hidden="true">/</span> {{ crumb }}</nav>{% endif %}
+    <p class="kicker">{{ kicker }}</p>
+    <h1>{{ heading }}</h1>
+    {% if lead %}<p class="lead">{{ lead }}</p>{% endif %}
+  </div>
+</section>

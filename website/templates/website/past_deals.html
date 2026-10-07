@@ -1,0 +1,47 @@
+{% extends 'website/base.html' %}{% load humanize %}
+{% block title %}Past Deals | Thistledown Homes{% endblock %}
+{% block description %}Homes Thistledown Homes bought below market and sold for less than similar homes nearby, with the full numbers behind each deal.{% endblock %}
+{% block content %}
+{% include 'website/partials/page_head.html' with crumb='Past Deals' kicker='Past deals' heading='Completed transactions.' lead='For every sale: what similar homes nearby sold for, what I paid, and what the buyer paid.' %}
+<section class="section section-tight">
+  <div class="wrap">
+    <div class="deal-list">
+      {% for deal in deals %}{% include 'website/partials/deal_card.html' %}{% empty %}<div class="empty"><h3>First deals coming soon.</h3><p>Check back after the first homes close.</p></div>{% endfor %}
+    </div>
+  </div>
+</section>
+
+{% if deals %}
+<section class="section section-mist" id="numbers">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div><p class="kicker">Investment numbers</p><h2>Transparent deal economics.</h2></div>
+      <p>Select a transaction to see the full cost breakdown, including the buyer's savings.</p>
+    </div>
+    <div class="numbers reveal">
+      <div class="numbers-tabs" role="tablist" aria-label="Choose a deal">
+        {% for deal in deals %}<button type="button" role="tab" id="tab-{{ deal.pk }}" aria-controls="panel-{{ deal.pk }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"{% if not forloop.first %} tabindex="-1"{% endif %}>{{ deal.name }}</button>{% endfor %}
+      </div>
+      {% for deal in deals %}
+      <div class="numbers-panel" role="tabpanel" id="panel-{{ deal.pk }}" aria-labelledby="tab-{{ deal.pk }}"{% if not forloop.first %} hidden{% endif %}>
+        <dl class="ledger">
+          <div><dt>Purchase Price</dt><dd>${{ deal.purchase_price|intcomma }}</dd></div>
+          <div><dt>Refresh, Closing &amp; Holding</dt><dd>${{ deal.costs|intcomma }}</dd></div>
+          <div class="sub"><dt>Total Investment</dt><dd>${{ deal.total_investment|intcomma }}</dd></div>
+          <div><dt>Sale Price</dt><dd>${{ deal.sale_price|intcomma }}</dd></div>
+          <div class="total"><dt>Gross Profit</dt><dd>${{ deal.gross_profit|intcomma }}</dd></div>
+        </dl>
+        <div class="chart">
+          <p>Where the neighborhood price went</p>
+          <div class="stack" aria-hidden="true"><span class="bar b-purchase" style="--w:{{ deal.bars.purchase|stringformat:'s' }}%"></span><span class="bar b-reno" style="--w:{{ deal.bars.costs|stringformat:'s' }}%"></span><span class="bar b-profit" style="--w:{{ deal.bars.profit|stringformat:'s' }}%"></span><span class="bar b-saved" style="--w:{{ deal.bars.saved|stringformat:'s' }}%"></span></div>
+          <ul class="legend"><li><i class="b-purchase"></i>My purchase ${{ deal.purchase_price|intcomma }}</li><li><i class="b-reno"></i>Costs ${{ deal.costs|intcomma }}</li><li><i class="b-profit"></i>My profit ${{ deal.gross_profit|intcomma }}</li><li><i class="b-saved"></i><strong>Buyer saved ${{ deal.buyer_savings|intcomma }}</strong></li></ul>
+          <p class="muted small">Full bar = similar homes nearby (${{ deal.nearby_price|intcomma }}). {{ deal.location }} · about {{ deal.months }} months from purchase to sale.</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <p class="disclaimer reveal"><strong>Disclaimer:</strong> These are example project numbers for illustration only. They are not a guarantee, projection, or promise of future investment returns or buyer savings. Figures exclude some closing, financing, and selling costs and taxes, which reduce actual profit. Nearby prices are estimates. Every property and market is different, and real estate investing involves risk, including loss of money. Nothing on this site is an offer to sell securities or investment advice.</p>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

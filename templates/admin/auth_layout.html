@@ -1,0 +1,69 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{% block title %}{% endblock %} | {{ brand_name }}</title>
+  <link rel="icon" href="{% static 'website/favicon.svg' %}" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="{% static 'website/css/admin-auth.css' %}">
+</head>
+<body>
+  <div class="auth">
+    <main class="auth-panel">
+      <div class="auth-box">
+        <a class="auth-brand" href="{% url 'website:home' %}" aria-label="{{ brand_name }} website">
+          <svg viewBox="-2.5 0 56 24" aria-hidden="true"><path d="M0 2L15 2L15 6.6L10 6.6L10 22L5 22L5 6.6L0 6.6ZM19 2L27 2Q34 2 34 9L34 15Q34 22 27 22L19 22ZM24 6.8L24 17.2L26.5 17.2Q29 17.2 29 14.5L29 9.5Q29 6.8 26.5 6.8ZM37 2L42 2L42 9.8L46 9.8L46 2L51 2L51 22L46 22L46 14.2L42 14.2L42 22L37 22Z"/></svg>
+          <span class="auth-brand-name">THISTLEDOWN</span>
+          <span class="auth-brand-sub">Marketing &middot; Owner portal</span>
+        </a>
+        {% block form %}{% endblock %}
+      </div>
+      <p class="auth-foot">&copy; {% now "Y" %} {{ brand_name }} &middot; <a href="{% url 'website:privacy' %}">Privacy</a> &middot; <a href="{% url 'website:terms' %}">Terms</a></p>
+    </main>
+
+    <aside class="auth-promo" aria-hidden="true">
+      <div class="promo-stage">
+        <figure class="promo-photo">
+          <img src="{% static 'website/video/hero-poster.jpg' %}" alt="">
+          <figcaption>HOMES, DEALS &amp; MESSAGES<br><strong>ALL IN ONE PLACE</strong></figcaption>
+        </figure>
+
+        <div class="phone phone-back">
+          <div class="phone-bar"><span>Deals</span></div>
+          <ul class="phone-list">
+            <li><i class="dot dot-done"></i><b></b><em></em></li>
+            <li><i class="dot dot-done"></i><b></b><em></em></li>
+            <li><i class="dot dot-live"></i><b></b><em></em></li>
+            <li><i class="dot"></i><b></b><em></em></li>
+            <li><i class="dot"></i><b></b><em></em></li>
+          </ul>
+        </div>
+        <div class="phone phone-front">
+          <div class="phone-bar"><span>Homes for sale</span></div>
+          <div class="phone-card"><img src="{% static 'website/video/hero-poster.jpg' %}" alt=""><b></b><em></em></div>
+          <ul class="phone-list">
+            <li><i class="dot dot-live"></i><b></b><em></em></li>
+            <li><i class="dot"></i><b></b><em></em></li>
+            <li><i class="dot"></i><b></b><em></em></li>
+          </ul>
+          <span class="phone-btn">Add a home</span>
+        </div>
+      </div>
+
+      <div class="promo-copy">
+        <h2>List, track and sell homes faster.</h2>
+        <p>Update listings, follow deals in progress, and answer buyer messages from one dashboard.</p>
+        <ul class="promo-points">
+          <li><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Listings</li>
+          <li><svg viewBox="0 0 24 24"><path d="M4 19V9m6 10V5m6 14v-7m4 7H2"/></svg>Deals</li>
+          <li><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg>Messages</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</body>
+</html>

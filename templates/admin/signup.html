@@ -1,0 +1,35 @@
+{% extends "admin/auth_layout.html" %}
+{% block title %}Create an account{% endblock %}
+
+{% block form %}
+{% if submitted %}
+  <h1 class="auth-title">Request sent</h1>
+  <p class="auth-note">Thanks! Your account was created and is waiting for approval. You can sign in as soon as the owner turns on your access.</p>
+  <a class="auth-btn" href="{% url 'admin:login' %}">Back to sign in</a>
+{% else %}
+  <h1 class="auth-title">Create an account</h1>
+  <p class="auth-note">New accounts need the owner's approval before they can open the dashboard.</p>
+
+  {% for error in form.non_field_errors %}<p class="auth-alert">{{ error }}</p>{% endfor %}
+
+  <form class="auth-form" method="post" novalidate>
+    {% csrf_token %}
+    <div class="field-row">
+      {% include "admin/auth_field.html" with field=form.first_name %}
+      {% include "admin/auth_field.html" with field=form.last_name %}
+    </div>
+    {% include "admin/auth_field.html" with field=form.email %}
+    {% include "admin/auth_field.html" with field=form.username %}
+    {% include "admin/auth_field.html" with field=form.password1 %}
+    {% include "admin/auth_field.html" with field=form.password2 %}
+    <div class="hp" aria-hidden="true">{{ form.website.label_tag }}{{ form.website }}</div>
+    <button class="auth-btn" type="submit">Create account</button>
+  </form>
+  {% include "admin/google_button.html" with label="Sign up with Google" %}
+
+  <div class="auth-links">
+    <p>Already have an account? <a href="{% url 'admin:login' %}">Sign in</a></p>
+    <a class="auth-back" href="{% url 'website:home' %}">&larr; Back to website</a>
+  </div>
+{% endif %}
+{% endblock %}

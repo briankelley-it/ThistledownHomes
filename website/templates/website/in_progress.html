@@ -1,0 +1,25 @@
+{% extends 'website/base.html' %}
+{% block title %}Deals In Progress | Thistledown Homes{% endblock %}
+{% block description %}Homes Thistledown Homes is buying or getting ready to list, with live progress updates.{% endblock %}
+{% block content %}
+{% include 'website/partials/page_head.html' with crumb='Deals In Progress' kicker='Deals in progress' heading='Current acquisitions.' lead='Homes under contract or being prepared for listing. Contact me for early access before they go to market.' %}
+<section class="section section-tight">
+  <div class="wrap">
+    <div class="project-grid">
+      {% for p in projects %}
+      <article class="project reveal">
+        <div class="project-photo">{% if p.photo_url %}<img loading="lazy" src="{{ p.photo_url }}" alt="{{ p.name }}, {{ p.location }}" width="800" height="520">{% endif %}<span class="stage-pill">{{ p.get_stage_display }}</span></div>
+        <div class="project-body">
+          <h2 class="h3">{{ p.name }}</h2><p class="muted">{{ p.location }}</p>
+          <div class="progress" role="progressbar" aria-label="{{ p.name }} progress" aria-valuenow="{{ p.progress }}" aria-valuemin="0" aria-valuemax="100"><span style="--w:{{ p.progress }}%"></span></div>
+          <div class="progress-meta"><strong>{{ p.progress }}% complete</strong><span>Listing est. {{ p.expected_listing }}</span></div>
+          <ol class="stages" aria-label="Deal stages">{% for step in p.stage_steps %}<li class="{{ step.state }}" title="{{ step.label }}"><span class="sr-only">{{ step.label }}{% if step.state == 'done' %} (done){% elif step.state == 'current' %} (current){% endif %}</span></li>{% endfor %}</ol>
+          <p class="update"><strong>Latest update:</strong> {{ p.update }}</p>
+        </div>
+      </article>
+      {% empty %}<div class="empty"><h3>Nothing in the pipeline right now.</h3><p>New deals show up here as soon as I am under contract.</p></div>{% endfor %}
+    </div>
+    <p class="section-cta reveal"><a class="btn" href="{% url 'website:contact' %}">Request early access <span aria-hidden="true">→</span></a></p>
+  </div>
+</section>
+{% endblock %}

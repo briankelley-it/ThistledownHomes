@@ -1,0 +1,45 @@
+{% extends 'website/base.html' %}{% load humanize static %}
+{% block title %}Map of Homes For Sale | Thistledown Homes{% endblock %}
+{% block description %}See every Thistledown Homes home for sale on a map, with prices and savings compared to similar homes nearby.{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.js" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+<script src="{% static 'website/js/map.js' %}" defer></script>
+{% endblock %}
+{% block content %}
+<section class="map-page">
+  <aside class="map-side" aria-label="Homes on the map">
+    <div class="map-side-head">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="{% url 'website:home' %}">Home</a> <span aria-hidden="true">/</span> Map</nav>
+      <h1>Homes on the map</h1>
+      <p class="muted" id="map-count" aria-live="polite">{{ homes|length }} homes</p>
+      <div class="map-filters" role="group" aria-label="Show homes by status">
+        {% for value, label in statuses %}<button type="button" class="map-chip map-chip-{{ value }}" data-status="{{ value }}" aria-pressed="true"><i aria-hidden="true"></i>{{ label }}</button>{% endfor %}
+      </div>
+    </div>
+    <ul class="map-list" id="map-list">
+      {% for home in homes %}{% with photo=home.cover %}
+      <li class="map-item" data-slug="{{ home.slug }}" data-status="{{ home.status }}">
+        <button type="button" class="map-item-btn" data-fly="{{ home.slug }}" aria-label="Show {{ home.address }} on the map">
+          {% if photo %}<img src="{{ photo.thumb_url }}" alt="" loading="lazy" width="240" height="160">{% endif %}
+          <span class="map-item-text">
+            <span class="map-item-price">${{ home.price|intcomma }}{% if home.savings %} <small>${% widthratio home.savings 1000 1 %}K under nearby</small>{% endif %}</span>
+            <span class="map-item-addr">{{ home.address }}</span>
+            <span class="map-item-meta">{{ home.location }} · {{ home.beds }} bd · {{ home.baths|floatformat:"-1" }} ba · <span class="map-status map-status-{{ home.status }}">{{ home.get_status_display }}</span></span>
+          </span>
+        </button>
+        <a class="map-item-link" href="{{ home.get_absolute_url }}">View home <span aria-hidden="true">→</span></a>
+      </li>
+      {% endwith %}{% empty %}
+      <li class="empty"><h3>No homes on the map yet.</h3><p>Add map coordinates to a home in the admin to show it here.</p></li>
+      {% endfor %}
+    </ul>
+    <p class="fine map-note">Pin locations are approximate for sample listings. Nearby prices are estimates from recent comparable sales.</p>
+  </aside>
+  <div class="map-wrap">
+    <div id="map" class="map" role="region" aria-label="Map of homes for sale" data-style-light="{{ site.map_style_light }}" data-style-dark="{{ site.map_style_dark }}"></div>
+    <noscript><p class="map-noscript">The interactive map needs JavaScript. Every home is listed beside the map.</p></noscript>
+  </div>
+</section>
+{{ pins|json_script:"map-pins" }}
+{% endblock %}

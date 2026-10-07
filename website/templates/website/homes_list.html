@@ -1,0 +1,27 @@
+{% extends 'website/base.html' %}{% load humanize %}
+{% block title %}Homes For Sale | Thistledown Homes{% endblock %}
+{% block description %}Higher-value homes for sale in Texas, each priced below similar homes nearby. Filter by price, bedrooms, location, and status.{% endblock %}
+{% block content %}
+{% include 'website/partials/page_head.html' with crumb='Homes For Sale' kicker='Homes for sale' heading='Homes for sale.' lead='Every listing shows recent comparable sales nearby, so you can see the value for yourself. Save homes to compare them later.' %}
+<section class="section section-tight">
+  <div class="wrap">
+    <form class="filters" id="filters" method="get" aria-label="Filter homes">
+      <label>Price<select name="price"><option value="">Any price</option>{% for p in price_options %}<option value="{{ p }}"{% if f.price == p|stringformat:"d" %} selected{% endif %}>Up to ${{ p|intcomma }}</option>{% endfor %}</select></label>
+      <label>Bedrooms<select name="beds"><option value="">Any</option>{% for b in "234" %}<option value="{{ b }}"{% if f.beds == b %} selected{% endif %}>{{ b }}+</option>{% endfor %}</select></label>
+      <label>Location<select name="location"><option value="">All locations</option>{% for loc in locations %}<option{% if f.location == loc %} selected{% endif %}>{{ loc }}</option>{% endfor %}</select></label>
+      <label>Status<select name="status"><option value="">Any status</option>{% for value, label in statuses %}<option value="{{ value }}"{% if f.status == value %} selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+      <label class="toggle"><input type="checkbox" id="saved-only"> <span>Saved only</span></label>
+      <noscript><button class="btn btn-small" type="submit">Apply</button></noscript>
+      {% if filtered %}<a class="btn btn-ghost btn-small" href="{% url 'website:homes' %}">Reset</a>{% endif %}
+      <a class="btn btn-ghost btn-small" href="{% url 'website:map' %}">Map view</a>
+    </form>
+    <p class="result-count" id="result-count" aria-live="polite">Showing {{ homes|length }} of {{ total }} homes</p>
+    <div class="property-grid" id="property-grid">
+      {% for home in homes %}{% include 'website/partials/property_card.html' %}{% empty %}
+      <div class="empty"><h3>No homes match those filters.</h3><p>Try widening your price or location, or <a href="{% url 'website:homes' %}">reset the filters</a>.</p></div>{% endfor %}
+    </div>
+    <div class="empty" id="saved-empty" hidden><h3>No saved homes yet.</h3><p>Tap a heart on any home to save it here.</p></div>
+    <p class="fine list-note">Nearby prices are estimates from recent comparable sales and are shown for comparison only. Sample listings and photos.</p>
+  </div>
+</section>
+{% endblock %}

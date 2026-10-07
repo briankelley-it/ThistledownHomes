@@ -1,0 +1,7 @@
+{% extends "admin/auth_layout.html" %}
+{% block title %}Sign-in cancelled{% endblock %}
+{% block form %}
+<h1 class="auth-title">Sign-in cancelled</h1>
+<p class="auth-note">You cancelled signing in with Google.</p>
+<a class="auth-btn" href="{% url 'admin:login' %}">Back to sign in</a>
+{% endblock %}

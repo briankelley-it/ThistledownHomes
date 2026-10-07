@@ -1,0 +1,11 @@
+{% load socialaccount %}
+<div class="auth-divider"><span>or</span></div>
+{% if google_login_enabled %}
+  <form method="post" action="{% provider_login_url 'google' %}">
+    {% csrf_token %}
+    <button class="google-btn" type="submit">{% include "admin/google_logo.html" %}<span>{{ label }}</span></button>
+  </form>
+{% else %}
+  <button class="google-btn" type="button" disabled title="Google sign-in is not set up yet">{% include "admin/google_logo.html" %}<span>{{ label }}</span></button>
+  {% if google_setup_hint %}<p class="auth-hint">Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET to turn this on.</p>{% endif %}
+{% endif %}

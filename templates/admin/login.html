@@ -1,0 +1,40 @@
+{% extends "admin/auth_layout.html" %}
+{% block title %}Sign in{% endblock %}
+
+{% block form %}
+<h1 class="auth-title">Sign in to your dashboard</h1>
+
+{% if user.is_authenticated %}
+  <p class="auth-alert">You are signed in as {{ user.username }}, but this account does not have access to the dashboard yet. Sign in with a different account, or wait for the owner to approve yours.</p>
+{% endif %}
+{% if form.errors and not form.non_field_errors %}
+  <p class="auth-alert">Please correct the error{{ form.errors|pluralize }} below.</p>
+{% endif %}
+{% for error in form.non_field_errors %}
+  <p class="auth-alert">{{ error }}</p>
+{% endfor %}
+
+<form class="auth-form" action="{{ app_path }}" method="post" id="login-form" novalidate>
+  {% csrf_token %}
+  <div class="field">
+    <label for="{{ form.username.id_for_label }}">Username or email</label>
+    <input type="text" name="username" id="{{ form.username.id_for_label }}" value="{{ form.username.value|default:'' }}" placeholder="you@gmail.com" autocomplete="username" autocapitalize="none" required autofocus>
+    {% for error in form.username.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+  </div>
+  <div class="field">
+    <label for="{{ form.password.id_for_label }}">Password</label>
+    <input type="password" name="password" id="{{ form.password.id_for_label }}" placeholder="Enter your password" autocomplete="current-password" required>
+    {% for error in form.password.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+  </div>
+  <input type="hidden" name="next" value="{{ next }}">
+  <button class="auth-btn" type="submit">Sign in</button>
+</form>
+{% include "admin/google_button.html" with label="Sign in with Google" %}
+
+<div class="auth-links">
+  {% url 'admin_password_reset' as password_reset_url %}
+  {% if password_reset_url %}<a href="{{ password_reset_url }}">Forgot your password?</a>{% endif %}
+  <p>New here? <a href="{% url 'admin_signup' %}">Create an account</a></p>
+  <a class="auth-back" href="{% url 'website:home' %}">&larr; Back to website</a>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'website/base.html' %}
+{% block title %}About | Thistledown Homes{% endblock %}
+{% block description %}Meet the investor behind Thistledown Homes and the idea behind making great homes affordable.{% endblock %}
+{% block content %}
+<section class="section section-navy about-page">
+  <div class="wrap about-grid">
+    <div class="about-media reveal">
+      <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1000&q=80" alt="Small model house on a wooden table" width="1000" height="1200">
+    </div>
+    <div class="about-copy reveal">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="{% url 'website:home' %}">Home</a> <span aria-hidden="true">/</span> About</nav>
+      <p class="kicker">About me</p>
+      <h1>Making quality homes more accessible.</h1>
+      <p class="lead">I started Thistledown Homes because great homes kept going to the people with the biggest budgets, and I wanted to change who gets a shot at them.</p>
+      <p>I look for higher-value homes I can buy below market, keep my costs lean, and price them so regular buyers can actually afford them. I make a fair profit, the seller gets a fast and certain sale, and the next owner gets a home that used to be out of reach.</p>
+      <ul class="values">
+        <li><strong>Disciplined buying</strong><span>Value comes from the acquisition, not shortcuts.</span></li>
+        <li><strong>Fair pricing</strong><span>Priced below comparable homes nearby.</span></li>
+        <li><strong>Transparency</strong><span>Clear numbers, no pressure.</span></li>
+      </ul>
+      <p class="fine">I am an independent real estate investor, not a licensed real estate agent or broker. I buy and sell properties for my own account.</p>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap cta-band cta-band-light reveal">
+    <div><p class="kicker">Next step</p><h2>Browse available homes.</h2></div>
+    <a class="btn" href="{% url 'website:homes' %}">View Homes For Sale <span aria-hidden="true">→</span></a>
+  </div>
+</section>
+{% endblock %}

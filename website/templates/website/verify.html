@@ -1,0 +1,100 @@
+{% extends 'website/base.html' %}
+{% block title %}Verify Me | Thistledown Homes{% endblock %}
+{% block description %}How to confirm Thistledown Homes is a real business before you buy: public records, title company closings, and buyer protections.{% endblock %}
+{% block content %}
+{% include 'website/partials/page_head.html' with crumb='Verify Me' kicker='Trust and safety' heading="Don't take my word for it. Verify it." lead='Prices below the neighborhood can sound too good to be true, so here is everything you can check yourself, without relying on anything I say.' %}
+
+<section class="section section-tight">
+  <div class="wrap">
+    <div class="alert-wire reveal" role="note">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17h.01"/></svg>
+      <div>
+        <p class="alert-title">I will never ask you to wire money to me.</p>
+        <p>All deposits and closing funds go to a licensed Texas title company. Before sending any money, call the title company yourself using a phone number you looked up independently, never one from an email. If anyone claiming to be me asks for a wire, gift cards, or crypto, it is a scam.</p>
+      </div>
+    </div>
+
+    {% if profile.has_registration or profile.business_address or profile.profiles %}
+    <div class="verify-grid">
+      {% if profile.has_registration or profile.business_address %}
+      <article class="verify-card reveal">
+        <p class="kicker">Registered business</p>
+        <dl class="facts">
+          {% if profile.legal_name %}<div><dt>Legal name</dt><dd>{{ profile.legal_name }}</dd></div>{% endif %}
+          {% if profile.entity_type %}<div><dt>Entity</dt><dd>{{ profile.entity_type }}</dd></div>{% endif %}
+          {% if profile.filing_number %}<div><dt>Texas SOS file number</dt><dd>{{ profile.filing_number }}</dd></div>{% endif %}
+          {% if profile.formed_year %}<div><dt>In business since</dt><dd>{{ profile.formed_year }}</dd></div>{% endif %}
+          {% if profile.business_address %}<div><dt>Business address</dt><dd>{{ profile.business_address }}</dd></div>{% endif %}
+          {% if profile.license_note %}<div><dt>Licensing</dt><dd>{{ profile.license_note }}</dd></div>{% endif %}
+        </dl>
+        {% if profile.has_registration %}<p class="verify-how">Look up the company yourself on the free <a href="https://comptroller.texas.gov/taxes/franchise/account-status/search" target="_blank" rel="noopener">Texas Comptroller entity search</a>.</p>{% endif %}
+      </article>
+      {% endif %}
+      {% if profile.profiles %}
+      <article class="verify-card reveal">
+        <p class="kicker">Independent profiles</p>
+        <ul class="link-list">{% for label, url in profile.profiles %}<li><a href="{{ url }}" target="_blank" rel="noopener">{{ label }} <span aria-hidden="true">↗</span></a></li>{% endfor %}</ul>
+        <p class="verify-how">These are run by other companies, so I cannot edit what you see there.</p>
+      </article>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="section-head reveal verify-head">
+      <div><p class="kicker">My commitments</p><h2>How every purchase works.</h2></div>
+      <p>These protections apply to every home I sell. If anything ever happens differently, walk away and contact me directly.</p>
+    </div>
+    <ol class="commitments">
+      <li class="reveal"><h3>Closings at a licensed title company</h3><p>Your earnest money and closing funds are held in escrow by a licensed Texas title company{% if profile.title_company_list %}, such as {{ profile.title_company_list|join:", " }}{% endif %}. You are welcome to choose your own.</p></li>
+      <li class="reveal"><h3>See it before you pay anything</h3><p>No deposits, holds, or application fees before you have toured the home in person.</p></li>
+      <li class="reveal"><h3>Your own inspection and appraisal</h3><p>Hire any inspector you like. If you use a mortgage, your lender orders an independent appraisal, which checks the value for you.</p></li>
+      <li class="reveal"><h3>Your own agent is welcome</h3><p>Bring a licensed real estate agent to represent you. I will work with them.</p></li>
+      <li class="reveal"><h3>Full disclosures in writing</h3><p>You receive the Texas Seller's Disclosure Notice, plus a lead-based paint disclosure for homes built before 1978.</p></li>
+      <li class="reveal"><h3>No pressure, ever</h3><p>Take the time you need. A real deal survives a day to think and a call to your own lawyer.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="section section-mist">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div><p class="kicker">Check a listing yourself</p><h2>Confirm ownership in public records.</h2></div>
+      <p>County appraisal districts publish who owns every property. It is free and takes about two minutes.</p>
+    </div>
+    <ol class="check-steps reveal">
+      <li><span>1</span><p>Open the appraisal district for the home's county below.</p></li>
+      <li><span>2</span><p>Search the property address.</p></li>
+      <li><span>3</span><p>Check that the owner shown is {% if profile.legal_name %}<strong>{{ profile.legal_name }}</strong>{% else %}my registered company{% endif %}.</p></li>
+      <li><span>4</span><p>Compare recent nearby sales with the comparable sales shown on each listing.</p></li>
+    </ol>
+    <ul class="district-list reveal">
+      {% for city, district in districts %}<li><span>{{ city }}</span><a href="{{ district.1 }}" target="_blank" rel="noopener">{{ district.0 }} <span aria-hidden="true">↗</span></a></li>{% endfor %}
+    </ul>
+    <p class="fine">Where available, each listing also links straight to its county record and to the same home on Zillow or Realtor.com.</p>
+  </div>
+</section>
+
+{% if reviews %}
+<section class="section">
+  <div class="wrap">
+    <div class="section-head reveal"><div><p class="kicker">Reviews</p><h2>From real buyers and sellers.</h2></div><p>Each review links to where it was originally posted.</p></div>
+    <div class="review-grid">
+      {% for r in reviews %}
+      <figure class="review reveal">
+        <div class="review-stars" aria-label="{{ r.rating }} out of 5 stars">{% for _ in r.stars %}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>{% endfor %}</div>
+        <blockquote>{{ r.text }}</blockquote>
+        <figcaption><strong>{{ r.name }}</strong>, {{ r.get_role_display }}{% if r.location %}, {{ r.location }}{% endif %} · {% if r.source_url %}<a href="{{ r.source_url }}" target="_blank" rel="noopener">{{ r.source }}</a>{% else %}{{ r.source }}{% endif %}, {{ r.date|date:"M Y" }}</figcaption>
+      </figure>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="section">
+  <div class="wrap cta-band cta-band-light reveal">
+    <div><p class="kicker">Still unsure?</p><h2>Ask me anything.</h2><p class="lead">Questions about a home, the price, or how closing works are always welcome.</p></div>
+    <a class="btn" href="{% url 'website:contact' %}">Contact Me <span aria-hidden="true">→</span></a>
+  </div>
+</section>
+{% endblock %}

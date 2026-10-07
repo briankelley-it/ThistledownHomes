@@ -1,0 +1,91 @@
+{% extends 'website/base.html' %}{% load humanize static %}
+{% block title %}Thistledown Homes | Great Homes, Priced Below the Neighborhood{% endblock %}
+{% block extra_head %}<link rel="preload" as="image" href="{% static 'website/video/hero-poster.jpg' %}"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Thistledown Homes","url":"{{ site.domain }}/","description":"Independent real estate investor that buys higher-value homes below market and resells them at more affordable prices.","areaServed":"Texas"}</script>{% endblock %}
+{% block content %}
+<section class="hero hero-has-video">
+  <!-- Background video: owner-supplied clip (7577619, 4K source) compressed to 1080p. Replace hero-houses.mp4 and hero-poster.jpg to change it. -->
+  <div class="hero-video" aria-hidden="true">
+    <video id="hero-video" autoplay muted loop playsinline preload="auto" disablepictureinpicture poster="{% static 'website/video/hero-poster.jpg' %}">
+      <source src="{% static 'website/video/hero-houses.mp4' %}" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-shade" aria-hidden="true"></div>
+  <button class="video-toggle" type="button" aria-label="Pause background video" aria-pressed="false">
+    <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
+    <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg>
+  </button>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="kicker">Real estate investment</p>
+      <h1>Making great homes <span class="accent-text">actually affordable.</span></h1>
+      <p class="lead">Thistledown Homes buys higher-value homes below market and passes the savings on, so great houses land within reach of regular buyers.</p>
+      <div class="hero-actions">
+        <a class="btn" href="{% url 'website:homes' %}">View Homes For Sale <span aria-hidden="true">→</span></a>
+        <a class="btn btn-ghost" href="{% url 'website:how_it_works' %}">How It Works</a>
+      </div>
+    </div>
+    <div class="hero-media hero-bubble">
+      <!-- TDH symbol floating over the hero video (no frame). -->
+      <div class="hero-mark hero-mark-free" role="img" aria-label="Thistledown Homes TDH logo">
+          <svg viewBox="-2.5 -1 56 26" aria-hidden="true"><path d="M0 2L15 2L15 6.6L10 6.6L10 22L5 22L5 6.6L0 6.6ZM19 2L27 2Q34 2 34 9L34 15Q34 22 27 22L19 22ZM24 6.8L24 17.2L26.5 17.2Q29 17.2 29 14.5L29 9.5Q29 6.8 26.5 6.8ZM37 2L42 2L42 9.8L46 9.8L46 2L51 2L51 22L46 22L46 14.2L42 14.2L42 22L37 22Z"/></svg>
+          <span>Thistledown Homes</span>
+        </div>
+    </div>
+  </div>
+</section>
+
+<section class="mission-band" aria-label="Our mission">
+  <div class="wrap">
+    <p class="mission-kicker">Our mission</p>
+    <p class="mission-line">Homes priced for their <span>true value</span>, so more families can afford a place to call their own.</p>
+  </div>
+</section>
+
+<section class="section section-after-hero">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div><p class="kicker">Our approach</p><h2>Quality homes at fair prices.</h2></div>
+      <p>I acquire well-built homes below market from owners who value a fast, certain sale, keep costs disciplined, and pass the savings on to buyers.</p>
+    </div>
+    <div class="why-grid">
+      <article class="why-card reveal"><span class="why-tag">The problem</span><h3>Quality homes are out of reach.</h3><p>In many neighborhoods, well-built homes are priced beyond what most families can finance.</p></article>
+      <article class="why-card reveal"><span class="why-tag">How I buy</span><h3>Acquired below market.</h3><p>Estate sales, relocations, and stale listings, purchased with fast, reliable cash offers.</p></article>
+      <article class="why-card reveal"><span class="why-tag">How you save</span><h3>Savings passed to buyers.</h3><p>Each home is priced below comparable sales nearby, with a fair, modest margin.</p></article>
+    </div>
+    <p class="section-cta reveal"><a class="btn btn-ghost" href="{% url 'website:how_it_works' %}">How it works <span aria-hidden="true">→</span></a></p>
+  </div>
+</section>
+
+<section class="section section-mist">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div><p class="kicker">Featured listings</p><h2>Homes available now.</h2></div>
+      <p>Every listing shows recent comparable sales nearby, so you can see the value at a glance.</p>
+    </div>
+    <div class="property-grid">
+      {% for home in featured %}{% include 'website/partials/property_card.html' %}{% empty %}<div class="empty"><h3>New homes are on the way.</h3><p>Check back soon or reach out to get first look.</p></div>{% endfor %}
+    </div>
+    <p class="section-cta reveal"><a class="btn" href="{% url 'website:homes' %}">See all homes <span aria-hidden="true">→</span></a></p>
+  </div>
+</section>
+
+{% if latest_deal %}
+<section class="section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div><p class="kicker">Recent results</p><h2>A recently completed sale.</h2></div>
+      <p>What similar homes sold for, what I paid, and what the buyer saved.</p>
+    </div>
+    {% include 'website/partials/deal_card.html' with deal=latest_deal %}
+    <p class="section-cta reveal"><a class="btn btn-ghost" href="{% url 'website:past_deals' %}">See all past deals <span aria-hidden="true">→</span></a></p>
+  </div>
+</section>
+{% endif %}
+
+<section class="section section-navy">
+  <div class="wrap cta-band reveal">
+    <div><p class="kicker">Get in touch</p><h2>Interested in a property?</h2><p class="lead">Ask a question or schedule a private showing.</p></div>
+    <a class="btn btn-light" href="{% url 'website:contact' %}">Contact Me <span aria-hidden="true">→</span></a>
+  </div>
+</section>
+{% endblock %}

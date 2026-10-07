@@ -1,0 +1,61 @@
+{% extends 'website/base.html' %}
+{% block title %}How It Works | Thistledown Homes{% endblock %}
+{% block description %}How Thistledown Homes buys higher-value homes below market and passes the savings on to regular buyers.{% endblock %}
+{% block content %}
+{% include 'website/partials/page_head.html' with crumb='How It Works' kicker='How it works' heading='A better price, by design.' lead='How I acquire quality homes below market value and pass the savings on to buyers.' %}
+<section class="section section-tight">
+  <div class="wrap">
+    <div class="why-grid">
+      <article class="why-card reveal">
+        <span class="why-tag">The problem</span>
+        <h2 class="h3">Quality homes are out of reach.</h2>
+        <p>In a lot of neighborhoods, the homes worth living in have drifted out of reach. Good schools, solid construction, room to grow, and a price tag that only works for the biggest budgets. Regular buyers end up settling for less or giving up.</p>
+      </article>
+      <article class="why-card reveal">
+        <span class="why-tag">How I buy</span>
+        <h2 class="h3">Acquired below market.</h2>
+        <p>Some owners need a fast, certain sale more than top dollar: an inherited estate, a job relocation, a divorce, a home that sat on the market too long. A clean cash offer on a quick timeline lets me buy those higher-value homes below what they would normally sell for.</p>
+      </article>
+      <article class="why-card reveal">
+        <span class="why-tag">How you save</span>
+        <h2 class="h3">Savings passed to buyers.</h2>
+        <p>I keep costs lean: only the updates a home truly needs, no designer markups. Then I price it below similar homes nearby rather than at the top of the market. I earn a fair, modest margin, and the buyer gets a better home for less.</p>
+      </article>
+    </div>
+
+    <div class="example reveal">
+      <div class="example-copy">
+        <p class="kicker">How the math works</p>
+        <h2 class="h3">An example transaction.</h2>
+        <p>A typical deal, step by step. The discount comes from how the home is acquired, not from cutting corners.</p>
+        <ul class="sources" aria-label="Where discounts come from">
+          <li>Estate sales</li><li>Job relocations</li><li>Divorce sales</li><li>Foreclosures</li><li>Homes that sat too long</li><li>Off-market deals</li>
+        </ul>
+      </div>
+      <ol class="price-ladder">
+        <li><span>Similar homes nearby sell for</span><strong>$420,000</strong></li>
+        <li><span>I buy it for (estate sale, 2-week close)</span><strong>$300,000</strong></li>
+        <li><span>Light refresh, closing, and holding costs</span><strong>+ $20,000</strong></li>
+        <li class="you"><span>Your price</span><strong>$365,000</strong></li>
+        <li class="win"><span>You pay less than nearby</span><strong>$55,000</strong></li>
+      </ol>
+    </div>
+    <p class="disclaimer reveal"><strong>Example only.</strong> Figures are illustrative, not a specific property or a promise of any price, discount, or savings. "Similar homes nearby" is an estimate based on recent comparable sales and will vary. Buyers should confirm value with their own agent or appraiser.</p>
+  </div>
+</section>
+
+<section class="section section-mist">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div><p class="kicker">Process</p><h2>From acquisition to sale in four steps.</h2></div>
+    </div>
+    <ol class="process">
+      <li class="reveal"><span class="step-no">01</span><h3>Find the Deal</h3><p>I look for higher-value homes selling below market: estate sales, relocations, foreclosures, and homes that sat too long.</p></li>
+      <li class="reveal"><span class="step-no">02</span><h3>Buy Below Market</h3><p>Sellers who need speed and certainty value a clean cash offer. That is how I get a better price.</p></li>
+      <li class="reveal"><span class="step-no">03</span><h3>Keep Costs Lean</h3><p>Only the updates the home truly needs. No designer markups and no luxury add-ons baked into your price.</p></li>
+      <li class="reveal"><span class="step-no">04</span><h3>Pass the Savings On</h3><p>I price the home below similar homes nearby so more people can afford to call it theirs.</p></li>
+    </ol>
+    <p class="section-cta reveal"><a class="btn" href="{% url 'website:homes' %}">See homes for sale <span aria-hidden="true">→</span></a></p>
+  </div>
+</section>
+{% endblock %}

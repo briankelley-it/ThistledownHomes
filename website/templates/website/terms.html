@@ -1,0 +1,43 @@
+{% extends 'website/base.html' %}
+{% block title %}Terms of Use | Thistledown Homes{% endblock %}
+{% block description %}Terms of Use for the Thistledown Homes website, including investor disclosures for home buyers.{% endblock %}
+{% block content %}
+<div class="wrap legal-page">
+    <p class="eyebrow">LEGAL</p>
+    <h1>Terms of Use</h1>
+    <p class="updated">Effective October 6, 2026</p>
+    <div class="toc"><ol><li><a href="#accept">Using this site</a></li><li><a href="#investor">Who we are</a></li><li><a href="#sellers">If I make an offer on your home</a></li><li><a href="#buyers">For home buyers</a></li><li><a href="#investors">For lenders and partners</a></li><li><a href="#fair-housing">Fair housing</a></li><li><a href="#communications">Communications</a></li><li><a href="#site-rules">Site rules</a></li><li><a href="#disclaimers">Disclaimers and liability</a></li><li><a href="#law">Governing law and contact</a></li></ol></div>
+
+    <h2 id="accept">1. Using this site</h2>
+    <p>These Terms of Use apply to the website operated by <span class="fill-in">[Company legal name]</span> ("Thistledown Homes," "we," "us"). By using the site you agree to these terms and to our <a href="{% url 'website:privacy' %}">Privacy Policy</a>. If you do not agree, please do not use the site.</p>
+
+    <h2 id="investor">2. Who we are</h2>
+    <p>We are a real estate investment company. We buy residential property, often below market value, make any needed updates, and resell it, acting as a principal for our own account. <strong>We are not a licensed real estate broker or sales agent, and we do not represent buyers or sellers.</strong> Information about real estate licensing in Texas is available from the <a href="https://www.trec.texas.gov/">Texas Real Estate Commission</a>.</p>
+    <p>If we ever offer to sell an option or assign our interest in a contract to buy a property, rather than owning the property ourselves, we will disclose in writing to both the seller and any potential buyer that we hold only an equitable interest in the property, as required by Texas Occupations Code Section 1101.0045. Any advertising for such a property will say the same.</p>
+
+    <h2 id="sellers">3. If I make an offer on your home</h2>
+    <ul><li>I sometimes reach out to owners about buying their property. Any offer is not binding until both parties sign a written purchase contract, and you are never obligated to accept.</li><li>Because I offer speed and certainty, my offer may be less than you could get by listing with an agent on the open market. Nothing I say is an appraisal or a statement of your home's market value.</li><li>You are encouraged to compare options and to have an attorney or licensed real estate agent of your choice review any contract before you sign it.</li></ul>
+
+    <h2 id="buyers">4. For home buyers</h2>
+    <ul><li>Listings, prices, photos, square footage, nearby price comparisons, and descriptions are believed accurate but are not guaranteed and may change. Homes are subject to prior sale or withdrawal. Please verify all information independently. Nearby prices shown for comparison are estimates from recent comparable sales, not appraisals, and any savings shown are not guaranteed.</li><li>We provide the Texas Seller's Disclosure Notice required by Texas Property Code Section 5.008 and, for homes built before 1978, the federal lead-based paint disclosure.</li><li>We encourage you to get your own inspection and to use your own agent, lender, and title company. We will cooperate with your agent.</li><li>The site does not offer loans or financing advice. Any payment figures are estimates only.</li></ul>
+
+    <h2 id="investors">5. For lenders and partners</h2>
+    <p>Nothing on this site is an offer to sell, or a solicitation of an offer to buy, any security or investment. Any lending or partnership arrangement is made only through written agreements between the parties, after independent review. Real estate investing involves risk, including the loss of principal, and past projects do not guarantee future results. We do not give legal, tax, or investment advice.</p>
+
+    <h2 id="fair-housing">6. Fair housing</h2>
+    <p>We are committed to equal housing opportunity. We do not discriminate against any person on the basis of race, color, religion, sex (including sexual orientation and gender identity), disability, familial status, or national origin, in compliance with the federal Fair Housing Act and the Texas Fair Housing Act. If you believe you have experienced housing discrimination, you may contact HUD at <a href="https://www.hud.gov/fairhousing">hud.gov/fairhousing</a> or the Texas Workforce Commission Civil Rights Division.</p>
+
+    <h2 id="communications">7. Communications</h2>
+    <p>If you give us your phone number and check the consent box, you agree that we may call and text you about your inquiry, including with automated technology. Consent is not required to buy or sell a home. Reply STOP to opt out of texts at any time. See our <a href="{% url 'website:privacy' %}#texts">Privacy Policy</a> for details.</p>
+
+    <h2 id="site-rules">8. Site rules</h2>
+    <p>You agree not to misuse the site, including by submitting false information, attempting to access systems you are not authorized to use, scraping listings in bulk, or interfering with the site's operation. Site content, branding, and design belong to us or our licensors and may not be copied for commercial use without permission.</p>
+
+    <h2 id="disclaimers">9. Disclaimers and limitation of liability</h2>
+    <p>The site is provided "as is" without warranties of any kind, to the fullest extent permitted by law. We are not liable for indirect, incidental, or consequential damages arising from your use of the site. Nothing in these terms limits rights you have under law that cannot be waived, or our obligations under a signed purchase contract.</p>
+
+    <h2 id="law">10. Governing law, changes, and contact</h2>
+    <p>These terms are governed by the laws of the State of Texas. We may update them, and the effective date above shows the latest version.</p>
+    <p><strong>Contact:</strong> <span class="fill-in">[Company legal name]</span>, <span class="fill-in">[mailing address]</span>, <span class="fill-in">[email address]</span>, <span class="fill-in">[phone number]</span>.</p>
+  </div>
+{% endblock %}

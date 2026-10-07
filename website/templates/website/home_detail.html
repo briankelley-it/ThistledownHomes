@@ -1,0 +1,69 @@
+{% extends 'website/base.html' %}{% load humanize %}
+{% block title %}{{ home.address }}, {{ home.location }} | Thistledown Homes{% endblock %}
+{% block description %}{{ home.summary }} {{ home.beds }} bed, {{ home.baths|floatformat:"-1" }} bath, {{ home.sqft|intcomma }} sq ft in {{ home.location }} for ${{ home.price|intcomma }}.{% endblock %}
+{% block og_title %}{{ home.address }} | ${{ home.price|intcomma }}{% endblock %}
+{% block og_image %}{% if home.cover %}{{ home.cover.large_url }}{% endif %}{% endblock %}
+{% block content %}
+<section class="page-head page-head-slim">
+  <div class="wrap">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="{% url 'website:home' %}">Home</a> <span aria-hidden="true">/</span> <a href="{% url 'website:homes' %}">Homes For Sale</a> <span aria-hidden="true">/</span> {{ home.address }}</nav>
+  </div>
+</section>
+<section class="section section-tight">
+  <div class="wrap detail">
+    <div class="detail-gallery">
+      {% with photo=home.cover %}{% if photo %}<img class="detail-main" id="detail-main" src="{{ photo.large_url }}" alt="{{ photo.alt|default:home.address }}" width="1400" height="900">{% endif %}{% endwith %}
+      {% if home.photos.all|length > 1 %}<div class="detail-thumbs">{% for photo in home.photos.all %}<button type="button" class="{% if forloop.first %}active{% endif %}" data-photo="{{ photo.large_url }}" data-alt="{{ photo.alt|default:home.address }}" aria-label="Show photo {{ forloop.counter }}"><img src="{{ photo.thumb_url }}" alt="" loading="lazy"></button>{% endfor %}</div>{% endif %}
+    </div>
+    <div class="detail-body">
+      <div class="detail-head">
+        <div><span class="status status-{{ home.status }}">{{ home.get_status_display }}</span><h1>{{ home.address }}</h1><p class="muted">{{ home.location }}</p></div>
+        <div class="detail-price">${{ home.price|intcomma }}</div>
+      </div>
+      <div class="savings-box">
+        <div><span>Similar homes nearby</span><strong><s>${{ home.nearby_price|intcomma }}</s></strong></div>
+        <div><span>This home</span><strong>${{ home.price|intcomma }}</strong></div>
+        <div class="hl"><span>You pay less by</span><strong>${{ home.savings|intcomma }}</strong></div>
+      </div>
+      <p class="why-price"><strong>Why it is priced lower:</strong> {{ home.source }}. {{ home.description }}</p>
+      <ul class="specs specs-lg"><li><strong>{{ home.beds }}</strong> bedrooms</li><li><strong>{{ home.baths|floatformat:"-1" }}</strong> bathrooms</li><li><strong>{{ home.sqft|intcomma }}</strong> sq ft</li>{% if home.year_built %}<li><strong>{{ home.year_built }}</strong> built</li>{% endif %}</ul>
+      {% if home.feature_list %}<h2 class="detail-sub">Highlights</h2>
+      <ul class="feature-list">{% for item in home.feature_list %}<li>{{ item }}</li>{% endfor %}</ul>{% endif %}
+      <div class="verify-home">
+        <h2 class="detail-sub">Verify this home</h2>
+        <ul class="verify-links">
+          {% if home.county_record_url %}<li><a href="{{ home.county_record_url }}" target="_blank" rel="noopener">County ownership record <span aria-hidden="true">↗</span></a></li>
+          {% elif home.appraisal_district %}<li><a href="{{ home.appraisal_district.1 }}" target="_blank" rel="noopener">Look up the owner at {{ home.appraisal_district.0 }} <span aria-hidden="true">↗</span></a></li>{% endif %}
+          {% if home.portal_url %}<li><a href="{{ home.portal_url }}" target="_blank" rel="noopener">Same home on a major listing site <span aria-hidden="true">↗</span></a></li>{% endif %}
+          {% if home.latitude %}<li><a href="{% url 'website:map' %}#{{ home.slug }}">See it on the map</a></li>{% endif %}
+          <li><a href="{% url 'website:verify' %}">How to confirm I am legitimate</a></li>
+        </ul>
+        {% if comps %}
+        <div class="comps">
+          <table>
+            <caption>Recent comparable sales nearby</caption>
+            <thead><tr><th scope="col">Address</th><th scope="col">Sold</th><th scope="col">Price</th><th scope="col">Size</th><th scope="col">Source</th></tr></thead>
+            <tbody>{% for c in comps %}<tr><td>{{ c.address }}</td><td>{{ c.sold_date|date:"M Y" }}</td><td>${{ c.sold_price|intcomma }}</td><td>{% if c.beds %}{{ c.beds }} bd{% endif %}{% if c.sqft %} · {{ c.sqft|intcomma }} sq ft{% endif %}</td><td>{{ c.source }}</td></tr>{% endfor %}</tbody>
+          </table>
+        </div>
+        {% endif %}
+        <p class="wire-note"><strong>Never wire money to me.</strong> All funds go through a licensed title company. Confirm wiring instructions by phone with the title company before sending anything.</p>
+      </div>
+      <div class="detail-actions">
+        {% if home.status != 'sold' %}<a class="btn" href="{% url 'website:make_offer' home.slug %}">{% if home.status == 'under_contract' %}Make a Backup Offer{% else %}Start an Offer{% endif %} <span aria-hidden="true">→</span></a>{% endif %}
+        <a class="btn btn-ghost" href="{% url 'website:contact' %}?home={{ home.slug }}">Ask a Question</a>
+        <button class="btn btn-ghost save-text" type="button" data-save="{{ home.slug }}" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C1 8.4 3 4.5 6.8 4.5c2.1 0 3.7 1.2 5.2 3 1.5-1.8 3.1-3 5.2-3 3.8 0 5.8 3.9 4.4 7.3C19.5 16.4 12 21 12 21z"/></svg> Save</button>
+      </div>
+      <p class="fine">Sample listing and photos. The nearby price is an estimate from recent comparable sales; please verify value with your own agent or appraiser. Information is believed accurate but not guaranteed. I sell as the owner, not as an agent, and provide the Texas Seller's Disclosure Notice (plus a lead-based paint disclosure for homes built before 1978). You are welcome to use your own agent, lender, and inspector.</p>
+    </div>
+  </div>
+</section>
+{% if more %}
+<section class="section section-mist">
+  <div class="wrap">
+    <div class="section-head"><div><p class="kicker">Keep looking</p><h2>More homes you might like.</h2></div></div>
+    <div class="property-grid">{% for home in more %}{% include 'website/partials/property_card.html' %}{% endfor %}</div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}
