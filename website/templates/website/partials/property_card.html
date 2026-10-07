@@ -1,5 +1,5 @@
 {% load humanize %}{% with photo=home.cover %}
-<article class="property-card reveal" data-home="{{ home.slug }}">
+<article class="property-card reveal" data-home="{{ home.slug }}" data-price="{{ home.price }}" data-beds="{{ home.beds }}" data-location="{{ home.location }}" data-status="{{ home.status }}">
   <div class="property-photo">
     <a href="{{ home.get_absolute_url }}" tabindex="-1" aria-hidden="true">{% if photo %}<img loading="lazy" src="{{ photo.card_url }}" alt="{{ photo.alt|default:home.address }}" width="800" height="560">{% endif %}</a>
     <span class="status status-{{ home.status }}">{{ home.get_status_display }}</span>

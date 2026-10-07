@@ -4,6 +4,8 @@
 // Consent model (US state privacy laws): essential storage always runs; anything else waits for a choice.
 // A browser Global Privacy Control signal is treated as an opt-out and cannot be overridden by the banner.
 (() => {
+  // Read from the footer link so it works when the site is served from a sub-path.
+  const privacyUrl = document.querySelector('.legal-links a[href$="/privacy/"]')?.getAttribute('href') || '/privacy/';
   const $ = selector => document.querySelector(selector);
   const KEY = 'tdh-consent';
   const VERSION = 1;
@@ -36,7 +38,7 @@
     banner = document.createElement('section');
     banner.className = 'consent-banner';
     banner.setAttribute('aria-label', 'Cookie and storage choices');
-    banner.innerHTML = `<div><h2>Your privacy choices</h2><p>We use essential browser storage to run this site. With your permission we also remember the homes you save. We do not sell your personal information or use advertising trackers.${gpc ? ' <strong>Your browser’s Global Privacy Control signal is on, and we honor it.</strong>' : ''} <a href="/privacy/#cookies">Learn more</a></p></div><div class="consent-actions"><button class="button" data-consent="all">Accept all</button><button class="button secondary" data-consent="essential">Essential only</button><button class="text-link" data-consent="customize">Customize</button></div>`;
+    banner.innerHTML = `<div><h2>Your privacy choices</h2><p>We use essential browser storage to run this site. With your permission we also remember the homes you save. We do not sell your personal information or use advertising trackers.${gpc ? ' <strong>Your browser’s Global Privacy Control signal is on, and we honor it.</strong>' : ''} <a href="${privacyUrl}#cookies">Learn more</a></p></div><div class="consent-actions"><button class="button" data-consent="all">Accept all</button><button class="button secondary" data-consent="essential">Essential only</button><button class="text-link" data-consent="customize">Customize</button></div>`;
     document.body.append(banner);
   }
 
@@ -45,7 +47,7 @@
     if (!dialog) {
       dialog = document.createElement('dialog');
       dialog.id = 'consent-dialog';
-      dialog.innerHTML = `<button class="close-dialog" aria-label="Close privacy choices">×</button><div class="modal-inner"><p class="eyebrow">COOKIES AND STORAGE</p><h2>Privacy <span class="serif">choices.</span></h2><form id="consent-form"><label class="consent-row"><input type="checkbox" checked disabled><span><strong>Essential</strong>Remembers your privacy choices and keeps the site working. Always on.</span></label><label class="consent-row"><input type="checkbox" name="preferences"><span><strong>Preferences</strong>Remembers homes you save with the heart button on this device.</span></label><label class="consent-row"><input type="checkbox" name="analytics"${gpc ? ' disabled' : ''}><span><strong>Analytics</strong>Not currently used. If we add site measurement later, it stays off unless you turn it on.${gpc ? ' Turned off by your Global Privacy Control signal.' : ''}</span></label><p class="form-note">We do not sell or share personal information for targeted advertising. Details are in our <a href="/privacy/">Privacy Policy</a>.</p><button class="button" type="submit">Save my choices <span>↗</span></button></form></div>`;
+      dialog.innerHTML = `<button class="close-dialog" aria-label="Close privacy choices">×</button><div class="modal-inner"><p class="eyebrow">COOKIES AND STORAGE</p><h2>Privacy <span class="serif">choices.</span></h2><form id="consent-form"><label class="consent-row"><input type="checkbox" checked disabled><span><strong>Essential</strong>Remembers your privacy choices and keeps the site working. Always on.</span></label><label class="consent-row"><input type="checkbox" name="preferences"><span><strong>Preferences</strong>Remembers homes you save with the heart button on this device.</span></label><label class="consent-row"><input type="checkbox" name="analytics"${gpc ? ' disabled' : ''}><span><strong>Analytics</strong>Not currently used. If we add site measurement later, it stays off unless you turn it on.${gpc ? ' Turned off by your Global Privacy Control signal.' : ''}</span></label><p class="form-note">We do not sell or share personal information for targeted advertising. Details are in our <a href="${privacyUrl}">Privacy Policy</a>.</p><button class="button" type="submit">Save my choices <span>↗</span></button></form></div>`;
       document.body.append(dialog);
       dialog.querySelector('.close-dialog').addEventListener('click', () => dialog.close());
       dialog.querySelector('form').addEventListener('submit', e => { e.preventDefault(); const f = e.target; save(f.preferences.checked, f.analytics.checked); dialog.close(); });
